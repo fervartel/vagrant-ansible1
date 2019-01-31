@@ -30,46 +30,31 @@ libssl-dev \
 openssl \
 libffi-dev \
 zlib1g-dev \
-software-properties-common \
 sshpass \
-python3-pip \
-python3-venv
+python-pip
+echo "ANSIBLE - INSTALLING PYWINRM TO MANAGE WINDOWS HOSTS"
+yes | pip install pywinrm
+echo "ANSIBLE - INSTALLING ANSIBLE WITH PIP (Requires Ubuntu 16.04+)"
+yes | pip install ansible
 SHELL
 
 config.vm.provision "shell", privileged: false, inline:
 <<-SHELL
-echo "CLONING OH MY ZSH FROM THE GIT REPO" 
+echo "ZSH - CLONING OH MY ZSH FROM THE GIT REPO" 
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-echo "COPYING DEFAULT .zshrc CONFIG FILE"
+echo "ZSH - COPYING DEFAULT .zshrc CONFIG FILE"
 cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
-echo "CHANGING THE OH_MY_ZSH THEME"
+echo "ZSH - CHANGING THE OH_MY_ZSH THEME"
 sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' ~/.zshrc
-SHELL
-
-config.vm.provision "shell", inline:
-<<-SHELL
-echo "CHANGING THE VAGRANT USER'S SHELL TO USE ZSH"
-chsh -s /bin/zsh vagrant
-SHELL
-
-# Ansible Installation section (Requires Ubuntu 16.04+)
-config.vm.provision "shell", inline:
-<<-SHELL
-echo "ADDING ANSIBLE REPO"
-sudo apt-add-repository --yes --update ppa:ansible/ansible
-echo "APT-GET UPDATE AFTER ADDING ANSIBLE REPO AND INSTALLING ANSIBLE"
-sudo apt-get update
-sudo apt-get install -y ansible
-echo "INSTALLING PYWINRM TO MANAGE WINDOWS VIA ANSIBLE"
-yes | pip3 install --upgrade setuptools 
-yes | pip3 install pywinrm    
-SHELL
-
-config.vm.provision "shell", privileged: false, inline:
-<<-SHELL
-echo "CLONING ANSIBLE TEMPLATES"
+echo "ANSIBLE - CLONING ANSIBLE TEMPLATES"
 git clone https://github.com/fervartel/ansible.git
 git clone https://github.com/groovemonkey/hands-on-ansible.git
+SHELL
+
+config.vm.provision "shell", inline:
+<<-SHELL
+echo "ZSH - CHANGING THE VAGRANT USER'S SHELL TO USE ZSH"
+chsh -s /bin/zsh vagrant
 SHELL
 ############################################################
 end
