@@ -31,7 +31,9 @@ openssl \
 libffi-dev \
 zlib1g-dev \
 sshpass \
-python-pip
+echo "INSTALLING PYTHON2 PIP"
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
 echo "ANSIBLE - INSTALLING PYWINRM TO MANAGE WINDOWS HOSTS"
 yes | pip install pywinrm
 echo "ANSIBLE - INSTALLING ANSIBLE WITH PIP (Requires Ubuntu 16.04+)"
